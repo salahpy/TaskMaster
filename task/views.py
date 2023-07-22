@@ -3,8 +3,10 @@ from .serializers import TaskSerializer
 from rest_framework import generics
 
 class TaskList(generics.ListAPIView):
-    queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    def get_queryset(self):
+        user_id = self.kwargs.get('user_id')
+        return Task.objects.filter(user=user_id)
 
 class CreateTask(generics.CreateAPIView):
     serializer_class = TaskSerializer
